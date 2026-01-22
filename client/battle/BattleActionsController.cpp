@@ -257,9 +257,7 @@ void BattleActionsController::enterCreatureCastingMode()
 		spells::BattleCast cast(owner.getBattle().get(), caster, spells::Mode::CREATURE_ACTIVE, spell);
 
 		auto m = spell->battleMechanics(&cast);
-		spells::detail::ProblemImpl ignored;
-
-		const bool isCastingPossible = m->canBeCastAt(target, ignored);
+		const bool isCastingPossible = m->canBeCastAt(target);
 
 		if (isCastingPossible)
 		{
@@ -343,16 +341,16 @@ void BattleActionsController::reorderPossibleActionsPriority(const CStack * stac
 			case PossiblePlayerBattleAction::WALK_AND_ATTACK:
 				return 7;
 				break;
-			case PossiblePlayerBattleAction::MOVE_STACK:
+			case PossiblePlayerBattleAction::WALK_AND_SPELLCAST:
 				return 8;
 				break;
-			case PossiblePlayerBattleAction::CATAPULT:
+			case PossiblePlayerBattleAction::MOVE_STACK:
 				return 9;
 				break;
-			case PossiblePlayerBattleAction::HEAL:
+			case PossiblePlayerBattleAction::CATAPULT:
 				return 10;
 				break;
-			case PossiblePlayerBattleAction::WALK_AND_SPELLCAST:
+			case PossiblePlayerBattleAction::HEAL:
 				return 11;
 				break;
 			case PossiblePlayerBattleAction::CREATURE_INFO:
@@ -768,7 +766,7 @@ bool BattleActionsController::actionIsLegal(PossiblePlayerBattleAction action, c
 		case PossiblePlayerBattleAction::WALK_AND_SPELLCAST:
 			{
 				const CStack * currentStack = owner.stacksController->getActiveStack();
-				if (!currentStack || !targetStack || !targetStack->alive())
+				if (!currentStack || !targetStack)
 					return false;
 
 				if (targetStack == currentStack)

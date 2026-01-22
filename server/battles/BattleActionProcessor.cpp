@@ -551,7 +551,7 @@ bool BattleActionProcessor::doWalkAndSpellcastAction(const CBattleInfoCallback &
 
 	BattleHex movementDestinationTile = target.at(0).hexValue;
 	BattleHex targetUnitTile = target.at(1).hexValue;
-	const CStack * destinationStack = battle.battleGetStackByPos(targetUnitTile, true);
+	const CStack * destinationStack = battle.battleGetStackByPos(targetUnitTile, false);
 
 	if(!destinationStack)
 	{
@@ -1226,9 +1226,7 @@ void BattleActionProcessor::attackCasting(const CBattleInfoCallback & battle, bo
 
 			auto m = spell->battleMechanics(&parameters);
 
-			spells::detail::ProblemImpl ignored;
-
-			if(!m->canBeCastAt(target, ignored))
+			if(!m->canBeCastAt(target))
 				continue;
 
 			//check if spell should be cast (probability handling)

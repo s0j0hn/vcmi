@@ -763,6 +763,9 @@ bool CBattleInfoCallback::battleCanAttackHex(const BattleHexArray & availableHex
 			if (attacker->doubleWide() && obstacle->getStoppingTile().contains(attacker->occupiedHex(fromHex)))
 				return false;
 		}
+		const battle::Unit * defender = battleGetUnitByPos(position, false); //Do not allow to target corpses when standing on them (a WALK_AND_SPELLCAST action)
+		if (defender && defender->isDead() && defender->coversPos(fromHex))
+			return false;
 	}
 
 	return true;
@@ -2069,9 +2072,7 @@ SpellID CBattleInfoCallback::getRandomBeneficialSpell(vstd::RNG & rand, const ba
 		spells::BattleCast cast(this, caster, spells::Mode::CREATURE_ACTIVE, spellPtr);
 
 		auto m = spellPtr->battleMechanics(&cast);
-		spells::detail::ProblemImpl problem;
-
-		if (!m->canBeCastAt(target, problem))
+		if (!m->canBeCastAt(target))
 			continue;
 
 		switch (spellID.toEnum())
