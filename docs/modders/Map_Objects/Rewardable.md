@@ -358,16 +358,22 @@ Keep in mind, that all randomization is performed on map load and on object rese
 
 ### Movement Points
 
-- Can NOT be used as limiter
+- Can be used as limiter. Hero must have at least specific movement points amount
 - Can be used as reward, to give movement points to hero. Movement points may go above mana pool limit.
 
 ```json
 "movePoints": 200,
 ```
 
+- If giving move points puts hero above daily movement limit, any overflow will be multiplied by specified percentage. If set to 0, movement will not go above movement limit.
+
+```json
+"moveOverflowFactor" : 50,
+```
+
 ### Movement Percentage
 
-- Can NOT be used as limiter
+- Can NOT be used as limiter. Hero must have at least specific movement points percentage
 - Can be used to set hero movement points level to specified percentage value. Value of 0 will take away any remaining movement points
 
 ```json
@@ -867,7 +873,7 @@ Campfire:
 
 Trapper Lodge (HotA):
 
-- map dice 0: grants `gainedAmount` of resources of type `gainedResource`
+- map dice 0: grants `gainedGoldAmount` of gold
 - map dice 1: grants `gainedCreatureAmount` of creatures of type `gainedCreature`
 
 Ancient Lamp (HotA):
@@ -891,3 +897,8 @@ Vial of Mana (HotA)
 - map dice 1: 40 spell points
 - map dice 2: 50 spell points
 - map dice 3: 60 spell points
+
+Sea Barrel (HotA):
+
+- map dice 0: grants `gainedAmount` of resources of type `gainedResource`
+- map dice 1: Nothing

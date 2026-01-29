@@ -205,6 +205,11 @@ void CGHeroInstance::setMovementPoints(int points)
 		movement = std::max(0, points);
 }
 
+int CGHeroInstance::movementPointsLimit() const
+{
+	return movementPointsLimit(!inBoat());
+}
+
 int CGHeroInstance::movementPointsLimit(bool onLand) const
 {
 	auto ti = getTurnInfo(0);
@@ -247,7 +252,7 @@ int CGHeroInstance::movementPointsLimitCached(bool onLand, const TurnInfo * ti) 
 CGHeroInstance::CGHeroInstance(IGameInfoCallback * cb)
 	: CArmedInstance(cb, BonusNodeType::HERO, false),
 	CArtifactSet(cb),
-	tacticFormationEnabled(false),
+	tacticFormationEnabled(true),
 	inTownGarrison(false),
 	moveDir(4),
 	mana(UNINITIALIZED_MANA),
